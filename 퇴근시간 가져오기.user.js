@@ -7,6 +7,8 @@
 // @match        https://flex.team/time-tracking/work-record/my*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=flex.team
 // @grant        none
+// @updateURL   https://gist.github.com/codingrun/919354b638c0bac537de1219d1fa5bd6/raw/1975f7369df0691e002665775339b977556cea6c/%25ED%2587%25B4%25EA%25B7%25BC%25EC%258B%259C%25EA%25B0%2584%2520%25EA%25B0%2580%25EC%25A0%25B8%25EC%2598%25A4%25EA%25B8%25B0.user.js
+// @downloadURL https://gist.github.com/codingrun/919354b638c0bac537de1219d1fa5bd6/raw/1975f7369df0691e002665775339b977556cea6c/%25ED%2587%25B4%25EA%25B7%25BC%25EC%258B%259C%25EA%25B0%2584%2520%25EA%25B0%2580%25EC%25A0%25B8%25EC%2598%25A4%25EA%25B8%25B0.user.js
 // ==/UserScript==
 
 'use strict';
