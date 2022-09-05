@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         퇴근시간얼마남았니
 // @namespace    http://tampermonkey.net/
-// @version      0.1.1
+// @version      0.1.2
 // @description  오늘은 몇시에 퇴근할 수 있는지 확인할 수 있습니다
 // @author       이수연(프론트앤드개발자)
 // @match        https://flex.team/time-tracking/work-record/my*
@@ -48,23 +48,23 @@ const getByeCompanyTime = () => {
     for(let i = 0; i < days.length; i++) {
         const timeText = days[i].querySelector('.ant-tag').textContent
         const time = Number(timeText.replace('h', ''))
-        const WORK_HOUR = 8;
+        let WORK_HOUR = 8;
 
         const upperDiv = days[i].parentNode
         if(time === 0 || upperDiv.textContent.indexOf('원격근무') > -1 || (upperDiv.textContent.indexOf('연차') > -1 && time === WORK_HOUR)) {
             continue;
         }
 
-        console.log('days[i] = ', upperDiv.textContent);
-        let today = new Date().toLocaleDateString()
-
-        console.log('today - ', today)
         // 반차
         if(upperDiv.textContent.indexOf('연차') > -1 && time < WORK_HOUR) {
-            upperDiv.textContent.split(' ')[1]
+            const rowDate = Number(upperDiv.textContent.split(' ')[1])
+            const today = new Date().getDate()
+            if(rowDate > today) {
+                continue;
+            }else{
+                WORK_HOUR -= 4
+            }
 
-
-            continue;
         }
 
         if(time > WORK_HOUR) {
