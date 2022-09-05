@@ -49,7 +49,19 @@ const getByeCompanyTime = () => {
         const WORK_HOUR = 8;
 
         const upperDiv = days[i].parentNode
-        if(time === 0 || upperDiv.textContent.indexOf('원격근무') > -1 || upperDiv.textContent.indexOf('연차') > -1) {
+        if(time === 0 || upperDiv.textContent.indexOf('원격근무') > -1 || (upperDiv.textContent.indexOf('연차') > -1 && time === WORK_HOUR)) {
+            continue;
+        }
+
+        console.log('days[i] = ', upperDiv.textContent);
+        let today = new Date().toLocaleDateString()
+
+        console.log('today - ', today)
+        // 반차
+        if(upperDiv.textContent.indexOf('연차') > -1 && time < WORK_HOUR) {
+            upperDiv.textContent.split(' ')[1]
+
+
             continue;
         }
 
