@@ -1,14 +1,12 @@
 // ==UserScript==
 // @name         퇴근시간얼마남았니
 // @namespace    http://tampermonkey.net/
-// @version      0.1.3
+// @version      0.1
 // @description  오늘은 몇시에 퇴근할 수 있는지 확인할 수 있습니다
 // @author       이수연(프론트앤드개발자)
 // @match        https://flex.team/time-tracking/work-record/my*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=flex.team
 // @grant        none
-// @updateURL   https://gist.github.com/codingrun/919354b638c0bac537de1219d1fa5bd6/raw/1975f7369df0691e002665775339b977556cea6c/%25ED%2587%25B4%25EA%25B7%25BC%25EC%258B%259C%25EA%25B0%2584%2520%25EA%25B0%2580%25EC%25A0%25B8%25EC%2598%25A4%25EA%25B8%25B0.user.js
-// @downloadURL https://gist.github.com/codingrun/919354b638c0bac537de1219d1fa5bd6/raw/1975f7369df0691e002665775339b977556cea6c/%25ED%2587%25B4%25EA%25B7%25BC%25EC%258B%259C%25EA%25B0%2584%2520%25EA%25B0%2580%25EC%25A0%25B8%25EC%2598%25A4%25EA%25B8%25B0.user.js
 // ==/UserScript==
 
 'use strict';
@@ -46,22 +44,29 @@ const getByeCompanyTime = () => {
     const days = document.querySelectorAll('[data-role="header-column-cell"]');
     let overWorkTimeNumber = 0;
     for(let i = 0; i < days.length; i++) {
-        const timeText = days[i].querySelector('.ant-tag').textContent
-        const time = Number(timeText.replace('h', ''))
-        let WORK_HOUR = 8;
-
-        const upperDiv = days[i].parentNode
-        if(time === 0 || upperDiv.textContent.indexOf('원격근무') > -1 || (upperDiv.textContent.indexOf('연차') > -1 && time === WORK_HOUR)) {
+        const timeElem = days[i].querySelector('span');
+        if(!timeElem) {
             continue;
         }
-
-        // 반차
-        if(upperDiv.textContent.indexOf('연차') > -1 && time < WORK_HOUR) {
-            const rowDate = Number(upperDiv.textContent.split(' ')[1])
-            const today = new Date().getDate()
-            if(rowDate > today) {
-                continue;
+        const timeText = timeElem.textContent
+        const timeArray = timeText.split(' ') || [];
+        let hour = 0;
+        let minute = 0;
+        for(let j = 0; j < timeArray.length; j++) {
+            const text = timeArray[j]
+            if(text.indexOf('시간') > -1) {
+                hour = Number(text.replace('시간', ''))
             }
+            if(text.indexOf('분') > -1) {
+                minute = Number(text.replace('분', ''))
+            }
+        }
+        const time = Number(hour + (minute/60))
+        const WORK_HOUR = 8;
+
+        const upperDiv = days[i].parentNode
+        if(time === 0 || upperDiv.textContent.indexOf('원격근무') > -1) {
+            continue;
         }
 
         if(time > WORK_HOUR) {
@@ -100,9 +105,9 @@ const setTextInHtml = (overWorkTimeNumber) => {
 
     if(overWorkTimeNumber < 0) {
         if(isCurrentMonth) {
-            today.innerText = today.innerText + ` 늦게 집에가야되요😂`
+            today.innerText = today.innerText + ` 늦게 집에가야되요🥹`
         }else{
-            today.innerText = today.innerText + ` 미달😂`
+            today.innerText = today.innerText + ` 미달🥹`
         }
 
     }else{
