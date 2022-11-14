@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         퇴근시간얼마남았니
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  오늘은 몇시에 퇴근할 수 있는지 확인할 수 있습니다
 // @author       이수연(프론트앤드개발자)
 // @match        https://flex.team/time-tracking/work-record/my*
@@ -105,14 +105,14 @@ const setTextInHtml = (overWorkTimeNumber) => {
 
     if(overWorkTimeNumber < 0) {
         if(isCurrentMonth) {
-            today.innerText = today.innerText + ` 늦게 집에가야되요🥹`
+            today.innerText = today.innerText + ` 늦게 집에가야되요🧚🏻‍♂️`
         }else{
-            today.innerText = today.innerText + ` 미달🥹`
+            today.innerText = today.innerText + ` 미달😉`
         }
 
     }else{
         if(isCurrentMonth) {
-            today.innerText = today.innerText + ` 일찍 집에가도되요😎`
+            today.innerText = today.innerText + ` 일찍 집에가도되요💃💃`
         }else{
             today.innerText = today.innerText + ` 초과😎😎`
         }
