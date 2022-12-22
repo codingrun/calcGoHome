@@ -13,11 +13,11 @@
 
 // **** 표시되는 문구는 참고용이니 정확하지 않을 수 있습니다. 책임은 본인에게 있습니다 ****
 window.onload = function () {
-    getByeCompanyTime();
+    setTimeout(() => {
+        getByeCompanyTime();
+    }, 1000);
 
     const today = document.querySelector('[data-key="global.오늘"]');
-
-//    today.parentNode.parentNode.append()
 
     // '내 근무'페이지에서 다른달 보려고 버튼클릭했을때 다시 계산하려고 넣은로직!
     let url = window.location.href;
@@ -43,9 +43,13 @@ window.onload = function () {
 const getByeCompanyTime = () => {
     const days = document.querySelectorAll('[data-role="header-column-cell"]');
     let overWorkTimeNumber = 0;
+    const day = new Date();
+    const todayDate = day.getDate();
     for(let i = 0; i < days.length; i++) {
         const timeElem = days[i].querySelector('span');
-        if(!timeElem) {
+        const dateElem = days[i].querySelector('.PJLV');
+        
+        if(!timeElem || Number(dateElem?.textContent.split(' ')[1]) > todayDate) {
             continue;
         }
         const timeText = timeElem.textContent
@@ -65,7 +69,7 @@ const getByeCompanyTime = () => {
         const WORK_HOUR = 8;
 
         const upperDiv = days[i].parentNode
-        if(time === 0 || upperDiv.textContent.indexOf('원격근무') > -1) {
+        if(time === 0 || upperDiv.textContent.indexOf('원격') > -1) {
             continue;
         }
 
